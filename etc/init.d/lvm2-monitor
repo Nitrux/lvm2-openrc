@@ -1,0 +1,24 @@
+#!/sbin/openrc-run
+
+description="Monitoring of LVM2 mirrors, snapshots etc."
+
+depend() {
+	# This service activates monitoring via dmeventd
+	need dmeventd
+	# It must run before filesystems are checked or mounted
+	before fsck localmount
+	# Provides a virtual dependency for other services
+	provide lvm-monitor
+}
+
+start() {
+	ebegin "Activating LVM2 monitoring"
+	lvm vgchange --monitor y
+	eend $?
+}
+
+stop() {
+	ebegin "Deactivating LVM2 monitoring"
+	lvm vgchange --monitor n
+	eend $?
+}

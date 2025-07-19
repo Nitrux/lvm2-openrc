@@ -1,0 +1,14 @@
+#!/sbin/openrc-run
+
+description="LVM2 poll daemon"
+command="/usr/sbin/lvmpolld"
+command_args="-f ${LVPOLLD_OPTS}"
+supervisor=supervise-daemon
+
+depend() {
+	need dmeventd
+}
+
+start_pre() {
+	checkpath --directory --mode 0700 /run/lvm
+}
