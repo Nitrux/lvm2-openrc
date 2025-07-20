@@ -2,11 +2,12 @@
 
 description="LVM2 poll daemon"
 command="/usr/sbin/lvmpolld"
-command_args="-f ${LVPOLLD_OPTS}"
+command_args="-t 60 -f"
 supervisor=supervise-daemon
 
 depend() {
 	need dmeventd
+	provide lvmpolld
 }
 
 start_pre() {

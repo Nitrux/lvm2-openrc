@@ -3,20 +3,15 @@
 description="Manages availability of block devices during shutdown"
 
 depend() {
-	# This service doesn't need to do anything at boot,
-	# but its stop action is critical for a clean shutdown.
-	keyword -softlevel
+    keyword -softlevel
 }
 
 start() {
-	# The start action does nothing, as per the systemd unit.
-	einfo "Block device availability service is active"
-	return 0
+    : # This service has no start action.
 }
 
 stop() {
-	ebegin "Deactivating block devices"
-	# The command from the systemd unit's ExecStop
-	/usr/sbin/blkdeactivate -u -l wholevg -m disablequeueing -r wait
-	eend $?
+    ebegin "Deactivating LVM block devices"
+    /usr/sbin/blkdeactivate -u -l wholevg -m disablequeueing -r wait
+    eend $?
 }
