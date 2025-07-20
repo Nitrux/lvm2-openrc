@@ -1,0 +1,19 @@
+#!/sbin/openrc-run
+
+description="Manages LVM lockspaces"
+
+depend() {
+	need lvm2-lockd
+}
+
+start() {
+	ebegin "Starting LVM lockspaces"
+	lvm vgchange --lock-start --lock-opt auto
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping LVM lockspaces"
+	lvmlockctl --stop-lockspaces --wait 1
+	eend $?
+}

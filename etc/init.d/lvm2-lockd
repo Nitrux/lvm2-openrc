@@ -1,0 +1,14 @@
+#!/sbin/openrc-run
+
+description="LVM lock daemon"
+command="/usr/sbin/lvmlockd"
+command_args="-f"
+supervisor=supervise-daemon
+
+depend() {
+	need localmount
+}
+
+start_pre() {
+	checkpath --directory --mode 0755 /run/lock/lvmlockd
+}
